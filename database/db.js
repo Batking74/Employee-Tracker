@@ -6,8 +6,27 @@ const database = createConnection({
     user: process.env.USER,
     password: process.env.PASSWORD,
     database: process.env.DATABASE
-});
+}).promise();
 
-console.log(database)
+async function getInfoFromDatabaseAt(tableName) {
+    try {
+        const response = (await database.query('SELECT * FROM ??', [tableName]))[0];
+        return response;
+    }
+    catch(error) {
+        console.log(error);
+    }
+}
 
-module.exports = { database }
+
+async function addToDatabase(tableName, req) {
+    try {
+        // const response = await database.query('INSERT INTO ??', [tableName]);
+        return;
+    }
+    catch(error) {
+        console.log(error);
+    }
+}
+
+module.exports = { getInfoFromDatabaseAt, addToDatabase }
