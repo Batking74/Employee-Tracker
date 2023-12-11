@@ -1,0 +1,23 @@
+-- CREATE DATABASE naztechsolutions;
+
+CREATE TABLE Employees (
+    id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    Firstname VARCHAR(255) NOT NULL,
+    Lastname VARCHAR(255) NOT NULL,
+    Department VARCHAR(255) NOT NULL,
+    Salary VARCHAR(255) NOT NULL,
+    Job_Title VARCHAR(255) NOT NULL,
+    Direct_Manager VARCHAR(255) NOT NULL
+)
+
+-- CREATE TABLE Roles (
+--     id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+--     Title VARCHAR(255) NOT NULL,
+--     Department VARCHAR(255) NOT NULL,
+--     Salary VARCHAR(255) NOT NULL
+-- )
+
+-- CREATE TABLE Departments (
+--     id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+--     Name VARCHAR(255) NOT NULL
+-- )
