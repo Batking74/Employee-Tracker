@@ -19,14 +19,37 @@ async function getInfoFromDatabaseAt(tableName) {
 }
 
 
-async function addToDatabase(tableName, req) {
+async function addToDatabase(tableName, columns, values) {
     try {
-        // const response = await database.query('INSERT INTO ??', [tableName]);
-        return;
+        const query = `INSERT INTO ?? (${columns.join(', ')}) VALUES(?)`;
+        const response = await database.query(query, [tableName, values]);
+        return `${response} Added`;
     }
     catch(error) {
         console.log(error);
     }
 }
 
-module.exports = { getInfoFromDatabaseAt, addToDatabase }
+
+async function updateDatabase(tableName, columnNames, values, id) {
+    console.log(tableName)
+    console.log(columnNames)
+    console.log(values)
+    console.log(id)
+    for(let value of values) {
+        for(let columnName of columnNames) {
+            try {
+                const query = `UPDATE ?? SET ?? = ? WHERE id = ?`
+                const response = await database.query(query, [tableName, columnName, value, id]);
+            }
+            catch(error) {
+                console.log(error);
+            }
+        }
+    }
+    return 'updated';
+}
+
+
+
+module.exports = { getInfoFromDatabaseAt, addToDatabase, updateDatabase }
