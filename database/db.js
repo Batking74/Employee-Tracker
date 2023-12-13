@@ -1,6 +1,9 @@
+// Importing Packages
 const { createConnection } = require('mysql2');
 require('dotenv').config();
 
+
+// Connecting to database
 const database = createConnection({
     host: process.env.HOST,
     user: process.env.USER,
@@ -8,6 +11,8 @@ const database = createConnection({
     database: process.env.DATABASE
 }).promise();
 
+
+// Retrieves data from database (Read)
 async function getInfoFromDatabaseAt(tableName) {
     try {
         const response = (await database.query('SELECT * FROM ??', [tableName]))[0];
@@ -19,6 +24,7 @@ async function getInfoFromDatabaseAt(tableName) {
 }
 
 
+// Adds data to database (Create)
 async function addToDatabase(tableName, columns, values) {
     try {
         const query = `INSERT INTO ?? (${columns.join(', ')}) VALUES(?)`;
@@ -31,11 +37,8 @@ async function addToDatabase(tableName, columns, values) {
 }
 
 
+// Updates already existing data in database (Update)
 async function updateDatabase(tableName, columnNames, values, id) {
-    console.log(tableName)
-    console.log(columnNames)
-    console.log(values)
-    console.log(id)
     for(let value of values) {
         for(let columnName of columnNames) {
             try {
@@ -51,5 +54,5 @@ async function updateDatabase(tableName, columnNames, values, id) {
 }
 
 
-
+// Exporting Modules
 module.exports = { getInfoFromDatabaseAt, addToDatabase, updateDatabase }
