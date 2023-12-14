@@ -39,16 +39,12 @@ async function addToDatabase(tableName, columns, values) {
 
 // Updates already existing data in database (Update)
 async function updateDatabase(tableName, columnNames, values, id) {
-    for(let value of values) {
-        for(let columnName of columnNames) {
-            try {
-                const query = `UPDATE ?? SET ?? = ? WHERE id = ?`
-                const response = await database.query(query, [tableName, columnName, value, id]);
-            }
-            catch(error) {
-                console.log(error);
-            }
-        }
+    try {
+        const query = `UPDATE ?? SET ?? = ? WHERE id = ?`;
+        const response = await database.query(query, [tableName, columnNames[0], values[0], id]);
+    }
+    catch(error) {
+        console.log(error);
     }
     return 'updated';
 }

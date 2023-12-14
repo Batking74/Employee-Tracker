@@ -52,7 +52,7 @@ const updateEmployeeRole = async () => {
         const choices2 = await getDataAtTable(1, 1);
         return [
             new list('list', 'Employee', 'Which Employees role is changing?', choices1),
-            new list('list', 'Job_Title', 'What is this Employees new role?', choices2)
+            new list('list', 'Role_ID', 'What is this Employees new role?', choices2)
         ]
     }
     catch(error) { console.log(error) }
@@ -76,10 +76,10 @@ const updateEmployeeManager = async () => {
 // Question to ask if user wants to add a Role
 const addRole = async () => {
     try {
-        const choices = await getDataAtTable(1, 3);
+        const choices = await getDataAtTable(0, 3);
         return [
             new Question(null, 'Title', 'What is this new roles title?'),
-            new list('list', 'Department', 'What department will this role belong to?', choices),
+            new list('list', 'Department_ID', 'What department will this role belong to?', choices),
             new Question(null, 'Salary', 'What is the salary for this role?')
         ]  
     }
@@ -90,15 +90,13 @@ const addRole = async () => {
 // Question to ask if user wants to add an Employee
 const addEmployee = async () => {
     try {
-        const choices1 = await getDataAtTable(1, 3);
         const choices2 = await getDataAtTable(1, 1);
         const choices3 = await getDataAtTable(2, 2);
         return [
             new Question(null, 'Firstname', 'What is the employees Firstname?'),
             new Question(null, 'Lastname', 'What is the employees Lastname?'),
-            new list('list', 'Department', 'What department does this employee belong to?', choices1),
+            new list('list', 'Role_ID', 'What is this employees job title?', choices2),
             new Question(null, 'Salary', 'What is this employees salary?'),
-            new list('list', 'Job_Title', 'What is this employees job title?', choices2),
             new list('list', 'Direct_Manager', 'Who is this employees direct supervisor?', choices3)
         ]
     }
@@ -121,11 +119,12 @@ const getAllEmployeesAndID = async () => {
 const getDataAtTable = async (index, i) => {
     let data = [];
     const allData = await getInfoFromDatabaseAt(table[index]);
+
     for(let row of allData) {
         switch(i) {
             case 1: data.push(row.Title); break;
             case 2: data.push(row.Direct_Manager); break;
-            case 3: data.push(row.Department); break;
+            case 3: data.push(row.Name); break;
             default: console.log(`${i} is Not a valid i`);
         }
     }

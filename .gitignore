@@ -1,4 +1,5 @@
 /Assets
 /node_modules
 package-lock.json
+/database/seeds.sql
 .env
