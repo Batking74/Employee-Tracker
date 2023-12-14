@@ -1,11 +1,11 @@
 # Employee Tracker
 
-![Image of Nazirs Employee Tracker Project]()
+![Image of Nazirs Employee Tracker Project](./Assets/Employee-Tracker%20-%2012_14_2023.webp)
 
 # Description
 Employee Tracker is a command-line application tailored for SQL-based management of your company and employees. It enables smooth execution of C.R.U.D operations, allowing you to navigate and manipulate your database efficiently. With an intuitive interface, dynamic prompts, and consistent naming conventions, Employee Tracker simplifies tasks like viewing and managing departments, roles, and employees. The application prioritizes data integrity and security, featuring robust error handling and parameterized queries for enhanced protection against SQL injection attacks. Ideal for CEOs and HR professionals, Employee Tracker provides a secure and streamlined solution for effective company and employee data management.
 
-[![Image of Nazirs Employee Tracker Video](image)](video)
+[![Image of Nazirs Employee Tracker Video](./Assets/Employee-Tracker%20Schema%20-%2012_14_2023.webp)](./Assets/Employee-Tracker%20-%2012_14_2023_changed.mp4)
 
 - Motivation: I was motivated to build Employee Tracker to practice simplifying company and employee management using SQL. This project facilitates C.R.U.D operations, and demonstrates my skills in preventing SQL injection and data sanitation.
 
