@@ -55,7 +55,9 @@ const updateEmployeeRole = async () => {
             new list('list', 'Role_ID', 'What is this Employees new role?', choices2)
         ]
     }
-    catch(error) { console.log(error) }
+    catch(error) {
+        handleAndLogError('updateEmployeeRole', error); // Error Handling
+    }
 }
 
 
@@ -69,7 +71,9 @@ const updateEmployeeManager = async () => {
             new list('list', 'Direct_Manager', 'Who is this Employees new Manager?', choices2)
         ]
     }
-    catch(error) { console.log(error) }
+    catch(error) {
+        handleAndLogError('updateEmployeeManager', error); // Error Handling
+    }
 }
 
 
@@ -83,7 +87,9 @@ const addRole = async () => {
             new Question(null, 'Salary', 'What is the salary for this role?')
         ]  
     }
-    catch(error) { console.log(error) }
+    catch(error) {
+        handleAndLogError('addRole', error); // Error Handling
+    }
 }
 
 
@@ -100,40 +106,67 @@ const addEmployee = async () => {
             new list('list', 'Direct_Manager', 'Who is this employees direct supervisor?', choices3)
         ]
     }
-    catch(error) { console.log(error) }
+    catch(error) {
+        handleAndLogError('addEmployee', error); // Error Handling
+    }
 }
 
 
 // Gets all employees from database and returns their names and id's
 const getAllEmployeesAndID = async () => {
-    let employees = [];
-    const allEmployees = await getInfoFromDatabaseAt(table[2]);
-    for(let employee of allEmployees) {
-        employees.push(`${employee.id}: ${employee.Firstname} ${employee.Lastname}`);
+    try {
+        let employees = [];
+        const allEmployees = await getInfoFromDatabaseAt(table[2]);
+
+        // Grabs all Employees Fullnames and ID's and returns them
+        for(let employee of allEmployees) {
+            employees.push(`${employee.id}: ${employee.Firstname} ${employee.Lastname}`);
+        }
+        return employees;
     }
-    return employees;
+    catch(error) {
+        handleAndLogError('getAllEmployeesAndID', error); // Error Handling
+    }
 }
 
 
 // Gets all employee roles from database and returns them
 const getDataAtTable = async (index, i) => {
-    let data = [];
-    const allData = await getInfoFromDatabaseAt(table[index]);
-
-    for(let row of allData) {
-        switch(i) {
-            case 1: data.push(row.Title); break;
-            case 2: data.push(row.Direct_Manager); break;
-            case 3: data.push(row.Name); break;
-            default: console.log(`${i} is Not a valid i`);
-        }
+    // Data Sanitation
+    if(typeof i != 'number' && typeof index != 'number') {
+        throw new Error('Invalid Input. Both Parameters (index and i) must be numbers');
     }
-    return data;
+    try {
+        let data = [];
+        const allData = await getInfoFromDatabaseAt(table[index]);
+        // Grabs all values in specified column and retuens them
+        for(let row of allData) {
+            switch(i) {
+                case 1: data.push(row.Title); break;
+                case 2: data.push(row.Direct_Manager); break;
+                case 3: data.push(row.Name); break;
+                default: console.log(`${i} is Not a valid i`);
+            }
+        }
+        return data;
+    }
+    catch (error) {
+        handleAndLogError('getDataAtTable', error); // Error Handling
+    }
 }
+
+
+// Handles Error Messages and Logs them
+function handleAndLogError(functionName, error) {
+    console.error(`Error in: ${functionName} function: ${error.message}`);
+    throw error;
+}
+
+
 
 // Dynamic message prompts and getters
 const questions = [addDepartment(), addRole(), addEmployee(), updateEmployeeRole(), updateEmployeeManager()];
 
 
 // Exporting Modules
-module.exports = { questions, list, table, choices }
+module.exports = { questions, list, table, choices, handleAndLogError }

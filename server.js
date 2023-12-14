@@ -1,6 +1,6 @@
 // Declaring Variables
 const { getInfoFromDatabaseAt, addToDatabase, updateDatabase } = require('./database/db');
-const { list, table, choices, questions } = require('./utils/questions');
+const { list, table, choices, questions, handleAndLogError } = require('./utils/questions');
 const { prompt } = require('inquirer');
 
 
@@ -19,7 +19,9 @@ async function init() {
             }
         }
     })
-    .catch(error => { console.log(error); })
+    .catch(error => {
+        handleAndLogError('init', error); // Error Handling
+    })
 }
 
 
@@ -41,16 +43,19 @@ function continuePrompt(i) {
 
 // Collects more data from the CEO, and creates CEO specified data in a table
 async function getMoreInfoFromUser(index) {
-    let i2, i3 = 0;
-    // if index is == to a number from 3-7 i2 = number thats equal to 3-7 - 3
+    let index2, index3 = 0;
+    // If the index matches a number in the range [3, 8), set index2 to the corresponding value
     for(let i = 3; i < 8; i++) {
-        if(index == i) i2 = i - 3;
+        if(index == i) index2 = i - 3;
     }
-    prompt(await questions[i2])
+    // Prompting more questions to get data
+    prompt(await questions[index2])
     .then(req => {
-        const containsNum = typeof parseInt(req.Employee) === 'number';
-        if(Object.keys(req).length > 3 || containsNum) i3 = 1;
-        sendRequest(Object.keys(req), Object.values(req), i2, i3);
+        if(Object.keys(req).length > 3) index3 = 1;
+        sendRequest(Object.keys(req), Object.values(req), index2, index3);
+    })
+    .catch(error => {
+        handleAndLogError('getMoreInfoFromUser', error); // Error Handling
     })
 }
 
@@ -63,24 +68,23 @@ async function getData(i) {
         promptChoices();
     }
     catch(error) {
-        console.log(error);
+        handleAndLogError('getData', error); // Error Handling
     }
 }
 
 
 // Sends request to database to create or update more data
-async function sendRequest(keys, values, i2, i3) {
+async function sendRequest(keys, values, index2, index3) {
     try {
-        if(i2 != 3 && i2 != 4 && i2 != 5) {
-            const res = await convert(values, i3 + 1, i3 - 1);
-            console.log(res)
+        if(index2 != 3 && index2 != 4 && index2 != 5) {
+            const res = await convert(values, index2, index3);
             // Creates data
-            const response = await addToDatabase(table[i2], keys, values);
+            const response = await addToDatabase(table[index2], keys, values);
             console.log(response);
         }
         else {
             // Updates data
-            const res = await convert(values, i3, i3);
+            const res = await convert(values, index3 + 1, index3 + 1);
             const id = parseInt(res[0]);
             const columnName = [keys[keys.length - 1]];
             const value = [res[res.length - 1]];
@@ -89,7 +93,9 @@ async function sendRequest(keys, values, i2, i3) {
         }
         promptChoices();
     }
-    catch(error) { console.log(error); }
+    catch(error) {
+        handleAndLogError('sendRequest', error); // Error Handling
+    }
 }
 
 
@@ -101,24 +107,33 @@ function promptChoices() {
 
 
 // Converts Database reference ID's to Strings and Database String Values to their corresponding ID's
-async function convert(values, index, i) {
+async function convert(values, index, index3) {
     try {
-        const data = await getInfoFromDatabaseAt(table[i]);
+        const data = await getInfoFromDatabaseAt(table[index3]);
+        let arr1, arr2;
         for(let i = 0; i < data.length; i++) {
-            /* If the CEO's requested Department is equal to a Department in the Departments table, get that Departments Row ID */
-            if(values[index] === data[i].Name) {
-                values[index] = data[i].id;
-                return values;
-            }
-            /* If the CEO's requested Role is equal to a Role in the Roles table, get that Roles Row ID */
-            if(values[index] === data[i].Title && index == 1) {
-                values[index] = data[i].id;
-                return values;
-            }
+            // Getting Department ID Number
+            arr1 = getIDForValueInTable(values, index, data, data[i].Name, i);
+            // Getting Roles ID Number
+            arr2 = getIDForValueInTable(values, index3 + 1, data, data[i].Title, i);
+            if(arr1 != undefined) return arr1;
+            if(arr2 != undefined) return arr1;
         }
         return values;
     }
-    catch(error) { console.log(error) }
+    catch(error) {
+        handleAndLogError('convert', error); // Error Handling
+    }
+}
+
+
+// Converts a string value in a table to it's corresponding ID
+function getIDForValueInTable(values, index, data, rowInDatabase, i) {
+    if(values[index] === undefined) index -= 1;
+    if(values[index] === rowInDatabase && values.length != 1) {
+        values[index] = data[i].id;
+        return values;
+    }
 }
 
 
