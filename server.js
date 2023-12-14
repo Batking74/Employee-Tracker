@@ -117,7 +117,7 @@ async function convert(values, index, index3) {
             // Getting Roles ID Number
             arr2 = getIDForValueInTable(values, index3 + 1, data, data[i].Title, i);
             if(arr1 != undefined) return arr1;
-            if(arr2 != undefined) return arr1;
+            if(arr2 != undefined) return arr2;
         }
         return values;
     }
