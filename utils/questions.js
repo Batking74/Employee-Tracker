@@ -13,7 +13,7 @@ class Question {
 
 
 // Creating list class
-class list extends Question {
+class List extends Question {
     constructor(type, name, message, choices) {
         super(type, name, message);
         this.choices = choices;
@@ -51,8 +51,8 @@ const updateEmployeeRole = async () => {
         const choices1 = await getAllEmployeesAndID();
         const choices2 = await getDataAtTable(1, 1);
         return [
-            new list('list', 'Employee', 'Which Employees role is changing?', choices1),
-            new list('list', 'Role_ID', 'What is this Employees new role?', choices2)
+            new List('list', 'Employee', 'Which Employees role is changing?', choices1),
+            new List('list', 'Role_ID', 'What is this Employees new role?', choices2)
         ]
     }
     catch(error) {
@@ -67,8 +67,8 @@ const updateEmployeeManager = async () => {
         const choices1 = await getAllEmployeesAndID();
         const choices2 = await getDataAtTable(2, 2);
         return [
-            new list('list', 'Employee', 'Which Employees Manager is changing?', choices1),
-            new list('list', 'Direct_Manager', 'Who is this Employees new Manager?', choices2)
+            new List('list', 'Employee', 'Which Employees Manager is changing?', choices1),
+            new List('list', 'Direct_Manager', 'Who is this Employees new Manager?', choices2)
         ]
     }
     catch(error) {
@@ -83,7 +83,7 @@ const addRole = async () => {
         const choices = await getDataAtTable(0, 3);
         return [
             new Question(null, 'Title', 'What is this new roles title?'),
-            new list('list', 'Department_ID', 'What department will this role belong to?', choices),
+            new List('list', 'Department_ID', 'What department will this role belong to?', choices),
             new Question(null, 'Salary', 'What is the salary for this role?')
         ]  
     }
@@ -101,9 +101,9 @@ const addEmployee = async () => {
         return [
             new Question(null, 'Firstname', 'What is the employees Firstname?'),
             new Question(null, 'Lastname', 'What is the employees Lastname?'),
-            new list('list', 'Role_ID', 'What is this employees job title?', choices2),
+            new List('list', 'Role_ID', 'What is this employees job title?', choices2),
             new Question(null, 'Salary', 'What is this employees salary?'),
-            new list('list', 'Direct_Manager', 'Who is this employees direct supervisor?', choices3)
+            new List('list', 'Direct_Manager', 'Who is this employees direct supervisor?', choices3)
         ]
     }
     catch(error) {
@@ -169,4 +169,4 @@ const questions = [addDepartment(), addRole(), addEmployee(), updateEmployeeRole
 
 
 // Exporting Modules
-module.exports = { questions, list, table, choices, handleAndLogError }
+module.exports = { Question, List, questions, table, choices, handleAndLogError }

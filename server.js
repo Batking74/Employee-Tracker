@@ -1,11 +1,11 @@
 // Declaring Variables
 const { getInfoFromDatabaseAt, addToDatabase, updateDatabase } = require('./database/db');
-const { list, table, choices, questions, handleAndLogError } = require('./utils/questions');
+const { List, table, choices, questions, handleAndLogError } = require('./utils/questions');
 const { prompt } = require('inquirer');
 
 
 // Instantiating Object
-const start = [ new list('list', 'Answer', 'Select an Option:', choices) ];
+const start = [ new List('list', 'Answer', 'Select an Option:', choices) ];
 
 
 // Prompts choices for the CEO to perform C.R.U.D operations, and manage company database

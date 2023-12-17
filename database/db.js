@@ -41,7 +41,7 @@ async function addToDatabase(tableName, columns, values) {
         // Execute SQL query
         const query = `INSERT INTO ?? (${columns.join(', ')}) VALUES(?)`;
         const response = await database.query(query, [tableName, values]);
-        return `${response} Added`;
+        return response;
     }
     catch(error) {
         // Error Handling
